@@ -1,4 +1,4 @@
-module johnbintz.com/joplin-multi-note-viewer
+module github.com/johnbintz/joplin-multi-note-viewer
 
 go 1.18
 
