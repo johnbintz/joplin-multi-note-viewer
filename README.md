@@ -57,7 +57,7 @@ I built this using Go 1.18 and Node 16.
 
 Add tests if you want. I may get around to it eventually.
 
-## Building & Reelasing
+## Building & Releasing
 
 * Bump the version. This project uses semantic versioning as best as possible.
 * Update the changelog with details on the changes. It uses the
