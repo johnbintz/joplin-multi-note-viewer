@@ -1,0 +1,4 @@
+joplin:
+  api_key: <web clipper api key>
+  url: http://localhost:41184
+
