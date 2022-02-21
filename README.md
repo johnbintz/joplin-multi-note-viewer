@@ -33,6 +33,8 @@ joplin:
   and `[Enter]` to open a result.
 * Open notes can be rearranged by dragging and dropping.
 * Close a note with the Close button.
+* Notes will reload every few seconds so if you make changes in Joplin,
+  they'll be reflected in the viewer.
 
 ## Contributing
 
