@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { fromUint8Array, toUint8Array } from 'js-base64'
 import draggable from 'vuedraggable'
 
 import Note from './components/Note.vue'
@@ -15,13 +16,28 @@ const drag = ref(false)
 const router = useRouter()
 const route = useRoute()
 
+function base64ToUUID(base64) {
+  return toUint8Array(base64).reduce((a, n) => (
+    a + ('0' + n.toString(16)).substr(-2)
+  ), "")
+}
+
+function uuidToBase64(uuid) {
+  const bytes = []
+  for (let i = 0; i < uuid.length; i += 2) {
+    bytes.push(parseInt(uuid.substr(i, 2), 16))
+  }
+
+  return fromUint8Array(Uint8Array.from(bytes), true)
+}
+
 if (route.query.ids) {
   const ids = route.query.ids.split(',')
   router.push({query: {ids: ''}})
 
   const loadNotes = async () => {
     for (let i = 0; i < ids.length; i++) {
-      await loadNote(ids[i])
+      await loadNote(base64ToUUID(ids[i]))
     }
   }
 
@@ -29,8 +45,12 @@ if (route.query.ids) {
 }
 
 watch(notes, (newNotes) => {
+  newNotes.forEach(n => {
+    uuidToBase64(n.id)
+  })
+
   router.push({
-    query: { ids: newNotes.map(n => n.id).join(',') }
+    query: { ids: newNotes.map(n => uuidToBase64(n.id)).join(',') }
   })
 
   window.document.title = newNotes.map(n => n.title).join(', ')
