@@ -78,6 +78,24 @@ func (s *noteResponse) GetFrontendBody() ([]byte, error) {
 	return res, nil
 }
 
+func handleGetResponse(url string, responseTarget interface{}) error {
+	resp, err := http.Get(url)
+	if err != nil {
+		return err
+	}
+
+	defer resp.Body.Close()
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(body, responseTarget)
+
+	return err
+}
+
 func performSearch(query string) (searchResponse, error) {
 	params := appConfig.BaseParams()
 	params.Add("query", query+"*")
@@ -87,25 +105,9 @@ func performSearch(query string) (searchResponse, error) {
 
 	url := appConfig.BaseURL() + "/search?" + params.Encode()
 
-	resp, err := http.Get(url)
-	if err != nil {
-		return response, err
-	}
+	err := handleGetResponse(url, &response)
 
-	defer resp.Body.Close()
-
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return response, err
-	}
-
-	err = json.Unmarshal(body, &response)
-
-	if err != nil {
-		return response, err
-	}
-
-	return response, nil
+	return response, err
 }
 
 func retrieveNote(ID string) (noteResponse, error) {
@@ -116,23 +118,7 @@ func retrieveNote(ID string) (noteResponse, error) {
 
 	url := appConfig.BaseURL() + "/notes/" + ID + "?" + params.Encode()
 
-	resp, err := http.Get(url)
-	if err != nil {
-		return response, err
-	}
+	err := handleGetResponse(url, &response)
 
-	defer resp.Body.Close()
-
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return response, err
-	}
-
-	err = json.Unmarshal(body, &response)
-
-	if err != nil {
-		return response, err
-	}
-
-	return response, nil
+	return response, err
 }
