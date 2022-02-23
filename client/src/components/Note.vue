@@ -2,6 +2,24 @@
 import { ref, computed, onMounted } from 'vue'
 import { marked } from 'marked'
 
+console.log(Prism.languages)
+
+const MAPPINGS = {
+  golang: 'go'
+}
+
+marked.setOptions({
+  highlight: function(code, lang) {
+    if (MAPPINGS[lang]) { lang = MAPPINGS[lang] }
+
+    if (Prism.languages[lang]) {
+      return Prism.highlight(code, Prism.languages[lang], lang)
+    } else {
+      return code
+    }
+  }
+})
+
 const props = defineProps({
   id: String,
   title: String,

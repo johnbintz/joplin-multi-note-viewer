@@ -10,7 +10,7 @@ import (
 	"strings"
 
 	"github.com/gorilla/mux"
-	"github.com/pkg/browser"
+	//"github.com/pkg/browser"
 )
 
 //go:embed dist/*
@@ -27,6 +27,7 @@ func main() {
 
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/api/v1/search", searchHandler)
+	router.HandleFunc("/api/v1/notes", notesHandler)
 	router.HandleFunc("/api/v1/note/{id}", noteHandler)
 
 	fmt.Println("starting public file server")
@@ -51,8 +52,10 @@ func main() {
 	fmt.Println("listening on localhost:8181")
 	http.ListenAndServe("localhost:8181", router)
 
-	err = browser.OpenURL("http://localhost:8181")
-	if err != nil {
-		fmt.Println("Unable to open browser, visit http://localhost:8181")
-	}
+	/*
+		err = browser.OpenURL("http://localhost:8181")
+		if err != nil {
+			fmt.Println("Unable to open browser, visit http://localhost:8181")
+		}
+	*/
 }

@@ -7,6 +7,10 @@ import draggable from 'vuedraggable'
 import Note from './components/Note.vue'
 import NoteSearch from './components/NoteSearch.vue'
 
+// global Prism object
+import './prism.js'
+import './prism.css'
+
 const results = ref([])
 const notes = ref([])
 const searchFocus = ref(+new Date)
@@ -69,6 +73,12 @@ async function performSearch(query) {
 
 async function loadNoteData(id) {
   const response = await fetch(`/api/v1/note/${id}`)
+  const responseJSON = await response.json()
+  return responseJSON
+}
+
+async function loadNotesData(ids) {
+  const response = await fetch(`/api/v1/notes?ids=${ids.join(',')}`)
   const responseJSON = await response.json()
   return responseJSON
 }
@@ -153,9 +163,7 @@ onMounted(() => {
   })
 
   setInterval(async () => {
-    for (let i = 0; i < notes.value.length; ++i) {
-      await reloadNote(i)
-    }
+    notes.value = await loadNotesData(notes.value.map(n => n.id))
   }, 5000)
 })
 </script>

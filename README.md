@@ -65,6 +65,11 @@ Add tests if you want. I may get around to it eventually.
 * Run `build.sh`. It will create the different platform binaries in `build` as
   well as a `config.yml` sample.
 
+## Other stuff
+
+This app uses a custom build of Prism for syntax highlighting. It includes every
+language that Prism supports as of Feb 2022.
+
 ## License
 
 MIT License
