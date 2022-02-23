@@ -2,8 +2,6 @@
 import { ref, computed, onMounted } from 'vue'
 import { marked } from 'marked'
 
-console.log(Prism.languages)
-
 const MAPPINGS = {
   golang: 'go'
 }
